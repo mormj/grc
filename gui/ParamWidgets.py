@@ -280,6 +280,51 @@ class EnumEntryParam(InputParam):
             css_name if not self.has_custom_value else 'enum_custom'
         )
 
+class DynamicWorkflowParam(InputParam):
+    """Provide an entry box and drop down menu for Raw Enum types."""
+
+    def __init__(self, *args, **kwargs):
+        InputParam.__init__(self, *args, **kwargs)
+        self._input = Gtk.ComboBoxText()
+
+        self._input.append_text("GNU Radio 3.x (Python)")
+        self._input.append_text("GNU Radio 3.x (C++)")
+
+        self.param_values = ['gnuradio-python', 'gnuradio-cpp']
+        self._input.set_active(self.param_values.index('gnuradio-python'))
+        self._input.connect('changed', self._editing_callback)
+        self._input.connect('changed', self._apply_change)
+        self.pack_start(self._input, False, False, 0)
+
+    def get_text(self):
+        return self.param_values[self._input.get_active()]
+
+    def set_tooltip_text(self, text):
+        self._input.set_tooltip_text(text)
+
+
+    @property
+    def has_custom_value(self):
+        return self._input.get_active() == -1
+
+    def get_text(self):
+        if self.has_custom_value:
+            return self._input.get_child().get_text()
+        else:
+            return self.param_values[self._input.get_active()]
+
+    def set_tooltip_text(self, text):
+        if self.has_custom_value:  # custom entry
+            self._input.get_child().set_tooltip_text(text)
+        else:
+            self._input.set_tooltip_text(text)
+
+    def set_color(self, css_name):
+        self._input.get_child().set_name(
+            css_name if not self.has_custom_value else 'enum_custom'
+        )
+
+
 
 class FileParam(EntryParam):
     """Provide an entry box for filename and a button to browse for a file."""

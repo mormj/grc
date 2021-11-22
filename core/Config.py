@@ -48,6 +48,24 @@ class Config(object):
         return valid_paths
 
     @property
+    def workflow_paths(self):
+        paths_sources = (
+            self.hier_block_lib_dir,
+            os.environ.get('GRC_WORKFLOWS_PATH', ''),
+        )
+
+        collected_paths = sum((paths.split(os.pathsep)
+                               for paths in paths_sources), [])
+
+        valid_paths = [normpath(expanduser(expandvars(path)))
+                       for path in collected_paths if exists(path)]
+        # Deduplicate paths to avoid warnings about finding blocks twice, but
+        # preserve order of paths
+        valid_paths = list(OrderedDict.fromkeys(valid_paths))
+
+        return valid_paths
+
+    @property
     def default_flow_graph(self):
         user_default = (
             os.environ.get('GRC_DEFAULT_FLOW_GRAPH') or

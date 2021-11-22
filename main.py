@@ -72,10 +72,10 @@ def main():
 
     log.debug("Loading platform")
     platform = Platform(
-        version=gr.version(),
-        version_parts=(gr.major_version(), gr.api_version(), gr.minor_version()),
-        prefs=gr.prefs(),
-        install_prefix=gr.prefix()
+        version=None,
+        version_parts=(0,0,0),
+        prefs=None,
+        install_prefix=None
     )
     platform.build_library()
 

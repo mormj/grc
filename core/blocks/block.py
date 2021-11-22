@@ -66,6 +66,7 @@ class Block(Element):
         )
         if self.key == 'options':
             self.params['id'].hide = 'part'
+            self.refresh_workflow()
 
         self.sinks = [port_factory(parent=self, **params) for params in self.inputs_data]
         self.sources = [port_factory(parent=self, **params) for params in self.outputs_data]
@@ -84,6 +85,13 @@ class Block(Element):
                 self.orig_cpp_templates = self.cpp_templates # The original template, in case we have to edit it when transpiling to C++
 
         self.current_bus_structure = {'source': None, 'sink': None}
+
+    def refresh_workflow(self):
+        # find the workflow key - delete all the other keys and load from selected workflow
+        workflow = self.params['workflow']
+        print(workflow)
+        # find the workflow in the workflows directory
+
 
     def get_bus_structure(self, direction):
         if direction == 'source':

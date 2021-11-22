@@ -45,7 +45,7 @@ TOP_BLOCK_FILE_MODE = stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR | stat.S_IRGRP 
 HIER_BLOCK_FILE_MODE = stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IWGRP | stat.S_IROTH
 
 PARAM_TYPE_NAMES = {
-    'raw', 'enum',
+    'raw', 'enum', 'workflow',
     'complex', 'real', 'float', 'int', 'short', 'byte',
     'complex_vector', 'real_vector', 'float_vector', 'int_vector',
     'hex', 'string', 'bool',

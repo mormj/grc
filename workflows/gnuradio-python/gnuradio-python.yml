@@ -1,12 +1,4 @@
-id: options
-label: Options
-flags: ['python', 'cpp']
-
 parameters:
--   id: workflow
-    label: Workflow
-    dtype: workflow
-    hide: none
 
 -   id: title
     label: Title
@@ -131,54 +123,3 @@ parameters:
     dtype: string
     default: '.:'
     hide: part
-asserts:
-- ${ len(placement) == 4 or len(placement) == 2 }
-- ${ all(i >= 0 for i in placement) }
-
-templates:
-    imports: |-
-        from gnuradio import gr
-        from gnuradio.filter import firdes
-        from gnuradio.fft import window
-        import sys
-        import signal
-        % if generate_options == 'qt_gui':
-        from PyQt5 import Qt
-        % endif
-        % if generate_options == 'bokeh_gui':
-        import time
-        import functools
-        from bokeh.client import push_session
-        from bokeh.plotting import curdoc
-        % endif
-        % if not generate_options.startswith('hb'):
-        from argparse import ArgumentParser
-        from gnuradio.eng_arg import eng_float, intx
-        from gnuradio import eng_notation
-        % endif
-    callbacks:
-    - 'if ${run}: self.start()
-
-        else: self.stop(); self.wait()'
-
-cpp_templates:
-    includes: ['#include <gnuradio/top_block.h>']
-
-documentation: |-
-    The options block sets special parameters for the flow graph. Only one option block is allowed per flow graph.
-
-    Title, author, and description parameters are for identification purposes.
-
-    The window size controls the dimensions of the flow graph editor. The window size (width, height) must be between (300, 300) and (4096, 4096).
-
-    The generate options controls the type of code generated. Non-graphical flow graphs should avoid using graphical sinks or graphical variable controls.
-
-    In a graphical application, run can be controlled by a variable to start and stop the flowgraph at runtime.
-
-    The id of this block determines the name of the generated file and the name of the class. For example, an id of my_block will generate the file my_block.py and class my_block(gr....
-
-    The category parameter determines the placement of the block in the block selection window. The category only applies when creating hier blocks. To put hier blocks into the root category, enter / for the category.
-
-    The Max Number of Output is the maximum number of output items allowed for any block in the flowgraph; to disable this set the max_nouts equal to 0.Use this to adjust the maximum latency a flowgraph can exhibit.
-
-file_format: 1

@@ -34,6 +34,9 @@ class Param(CoreParam):
         elif dtype == 'dir_select':
             input_widget_cls = ParamWidgets.DirectoryParam
 
+        elif dtype == 'workflow':
+            input_widget_cls = ParamWidgets.DynamicWorkflowParam
+
         elif dtype == 'enum':
             input_widget_cls = ParamWidgets.EnumParam
 
